@@ -11,6 +11,14 @@ builder.Services.AddAuthentication("cookie")
         o.SlidingExpiration = true; //TODO: what is this?
         o.LoginPath = "/account/login";
         o.AccessDeniedPath = "/account/accessdenied";
+    })
+    .AddGoogle("Google", o =>
+    {
+        o.ClientId = "952910843833-8qgmhvoru29ar8mr9ge3b5juc0orjive.apps.googleusercontent.com";
+        o.ClientSecret = "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";
+
+        o.CallbackPath = "/signin-google";
+        //o.SignInScheme = "cookie"; 
     });
 
 builder.Services.AddAuthorization(options =>
