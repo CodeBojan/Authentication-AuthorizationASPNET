@@ -12,13 +12,24 @@ builder.Services.AddAuthentication("cookie")
         o.LoginPath = "/account/login";
         o.AccessDeniedPath = "/account/accessdenied";
     })
+    .AddCookie("temp")
     .AddGoogle("Google", o =>
     {
         o.ClientId = "952910843833-8qgmhvoru29ar8mr9ge3b5juc0orjive.apps.googleusercontent.com";
         o.ClientSecret = "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";
 
         o.CallbackPath = "/signin-google";
-        //o.SignInScheme = "cookie"; 
+        o.SignInScheme = "temp"; 
+
+        /*o.Events = new Microsoft.AspNetCore.Authentication.OAuth.OAuthEvents()
+        {
+            OnCreatingTicket = e =>
+            {
+
+            };
+        };*/
+
+
     });
 
 builder.Services.AddAuthorization(options =>

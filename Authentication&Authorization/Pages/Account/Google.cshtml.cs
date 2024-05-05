@@ -19,7 +19,13 @@ namespace Authentication_Authorization.Pages.Account
 
             var properties = new AuthenticationProperties()
             {
-                RedirectUri = returnUrl
+                RedirectUri = Url.Page("Callback"),
+
+                Items =
+                {
+                    { "uru", returnUrl },
+                    { "scheme", "Google" }
+                }
             };
 
             return Challenge(properties, "Google");
