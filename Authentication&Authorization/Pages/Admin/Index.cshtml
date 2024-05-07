@@ -1,0 +1,42 @@
+﻿@page
+@model Authentication_Authorization.Pages.Admin.IndexModel
+@{
+    
+}
+
+<div class="row">
+    <table class="arrowes-table table-striped">
+        <thread>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th></th>
+            </tr>
+        </thread>
+        <tbody>
+            @foreach(var user in Model.Users)
+            {
+                <tr>
+                    <td>@user.UserName</td>
+                    <td>@user.Email</td>
+                    <td>
+                        <button type="button" class="btn btn-cta">
+                            <a asp-page="/Admin/Update" asp-route-id="@user.Id">Update User</a>
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-cta">
+                            <a asp-page="/Admin/Delete" asp-route-id="@user.Id">Delete User</a>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<h3>Admin Index Page</h3>
+<p>
+    <button type="button" class="btn btn-cta">
+        <a asp-page="/Admin/Create">Create User</a>
+    </button>
+</p>
