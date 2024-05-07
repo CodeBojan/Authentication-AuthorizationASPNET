@@ -10,6 +10,10 @@ namespace Authentication_Authorization.Pages.Admin
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+
+        [BindProperty]
+        public UserUpdateDto UserUpdateDto { get; set; }
+
         public UpdateModel(ApplicationDbContext applicationDbContext,
             UserManager<ApplicationUser> userManager)
         {
@@ -25,7 +29,7 @@ namespace Authentication_Authorization.Pages.Admin
         {
             var user = await _userManager.FindByIdAsync(userId);
             if (user != null)
-                return View(user);
+                return Page();
             else
                 return RedirectToAction("Update");
         }

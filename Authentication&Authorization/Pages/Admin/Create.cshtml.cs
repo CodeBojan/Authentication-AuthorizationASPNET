@@ -16,9 +16,11 @@ namespace Authentication_Authorization.Pages.Admin
         [BindProperty]
         [Required]
         public string UserName { get; set; }
+
         [BindProperty]
         [Required]
         public string Password { get; set; }
+
         [BindProperty]
         [Required]
         [RegularExpression("^[a-zA-Z0-9_\\\\.-]+@([a-zA-Z0-9-]+\\\\.)+[a-zA-Z]{2,6}$\", ErrorMessage = \"E-mail is not valid")]

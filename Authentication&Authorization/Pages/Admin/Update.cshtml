@@ -2,3 +2,23 @@
 @model Authentication_Authorization.Pages.Admin.UpdateModel
 @{
 }
+
+<h1 class="bg-info text-white">Update User</h1>
+<a asp-action="Index" class="btn btn-secondary">Back</a>
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<form asp-action="Update" method="post">
+    <div class="form-group">
+        <label asp-for="@Model.UserUpdateDto.NewUsername"></label>
+        <input asp-for="@Model.UserUpdateDto.NewUsername" value="@Model.UserUpdateDto.Username" class="form-control" disabled />
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.UserUpdateDto.NewPassword"></label>
+        <input asp-for="@Model.UserUpdateDto.NewPassword" value="@Model.UserUpdateDto.NewPassword" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.UserUpdateDto.NewEmail"></label>
+        <input asp-for="@Model.UserUpdateDto.NewEmail" value="@Model.UserUpdateDto.Email" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
