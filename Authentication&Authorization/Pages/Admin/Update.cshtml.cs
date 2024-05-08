@@ -11,17 +11,23 @@ namespace Authentication_Authorization.Pages.Admin
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IPasswordHasher<ApplicationUser> _passwordHasher;
+        private readonly IPasswordValidator<ApplicationUser> _passwordValidator;
+        private readonly IUserValidator<ApplicationUser> _userValidator;
 
         [BindProperty]
         public UserUpdateDto UserUpdateDto { get; set; }
 
         public UpdateModel(ApplicationDbContext applicationDbContext,
             UserManager<ApplicationUser> userManager,
-            IPasswordHasher<ApplicationUser> passwordHasher)
+            IPasswordHasher<ApplicationUser> passwordHasher,
+            IPasswordValidator<ApplicationUser> passwordValidator,
+            IUserValidator<ApplicationUser> userValidator)
         {
             _context = applicationDbContext;
             _userManager = userManager;
             _passwordHasher = passwordHasher;
+            _passwordValidator = passwordValidator;
+            _userValidator = userValidator;
         }
         public async Task<IActionResult> OnGet(string id)
         {
@@ -48,13 +54,27 @@ namespace Authentication_Authorization.Pages.Admin
             ApplicationUser user = await _userManager.FindByIdAsync(id);
             if (user != null)
             {
+                IdentityResult validPass = null;
                 if (!string.IsNullOrEmpty(newEmail) && !newEmail.Equals(user.Email))
-                    user.Email = newEmail;
+                {
+                    validPass = await _userValidator.ValidateAsync(_userManager, user);
+                    if (validPass.Succeeded)
+                        user.Email = newEmail;
+                    else
+                        ModelState.AddModelError("", "Updated email is not valid!");
+                }
                 else
                     ModelState.AddModelError("", "Email cannot be empty");
 
                 if (!string.IsNullOrEmpty(newPassword))
-                    user.PasswordHash = _passwordHasher.HashPassword(user, newPassword);
+                {
+                    /*validPass = await _passwordValidator.ValidateAsync(_userManager, user, newPassword); //will this work?
+                    if (validPass.Succeeded)*/
+                        user.PasswordHash = _passwordHasher.HashPassword(user, newPassword);
+                    //else
+                        //ModelState.AddModelError("", "Updated password is not valid!");
+
+                }
 
                 IdentityResult result = await _userManager.UpdateAsync(user);
                 if (result.Succeeded)

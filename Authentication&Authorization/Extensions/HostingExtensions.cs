@@ -1,4 +1,5 @@
 ﻿using Authentication_Authorization.Data;
+using Authentication_Authorization.IdentityPolicies;
 using Authentication_Authorization.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -9,12 +10,24 @@ namespace Authentication_Authorization.Extensions
     {
         public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
         {
+            //ASP.NET Identity Configuration
+
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetSection("ConnectionStrings:DefaultConnection").Get<string>()));
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 
+            builder.Services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequiredLength = 7;
+                options.Password.RequireDigit = true;
+
+                options.User.RequireUniqueEmail = true;
+            });
+
+            builder.Services.AddTransient<IPasswordValidator<ApplicationUser>, CustomPasswordPolicy>(); //added custom password validator -> it combines with the default one and the overriden options from identity options
+            builder.Services.AddTransient<IUserValidator<ApplicationUser>, CustomUserPolicy>();
             builder.Services.AddScoped<UserManager<ApplicationUser>>();
 
             builder.Services.AddRazorPages();
