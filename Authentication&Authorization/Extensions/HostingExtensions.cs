@@ -29,6 +29,7 @@ namespace Authentication_Authorization.Extensions
             builder.Services.AddTransient<IPasswordValidator<ApplicationUser>, CustomPasswordPolicy>(); //added custom password validator -> it combines with the default one and the overriden options from identity options
             builder.Services.AddTransient<IUserValidator<ApplicationUser>, CustomUserPolicy>();
             builder.Services.AddScoped<UserManager<ApplicationUser>>();
+            builder.Services.AddScoped<SignInManager<ApplicationUser>>();
 
             builder.Services.AddRazorPages();
 
@@ -84,7 +85,7 @@ namespace Authentication_Authorization.Extensions
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.MapRazorPages();//.RequireAuthorization();
+            app.MapRazorPages().RequireAuthorization();
 
             return app;
         }
