@@ -12,8 +12,10 @@ namespace Authentication_Authorization.Extensions
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetSection("ConnectionStrings:DefaultConnection").Get<string>()));
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
+
+            builder.Services.AddScoped<UserManager<ApplicationUser>>();
 
             builder.Services.AddRazorPages();
 
@@ -69,7 +71,7 @@ namespace Authentication_Authorization.Extensions
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.MapRazorPages().RequireAuthorization();
+            app.MapRazorPages();//.RequireAuthorization();
 
             return app;
         }

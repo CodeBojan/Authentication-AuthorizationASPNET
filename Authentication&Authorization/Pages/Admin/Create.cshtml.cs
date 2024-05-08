@@ -23,7 +23,7 @@ namespace Authentication_Authorization.Pages.Admin
 
         [BindProperty]
         [Required]
-        [RegularExpression("^[a-zA-Z0-9_\\\\.-]+@([a-zA-Z0-9-]+\\\\.)+[a-zA-Z]{2,6}$\", ErrorMessage = \"E-mail is not valid")]
+        [RegularExpression("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", ErrorMessage = "Email is not of valid format!")]
         public string Email { get; set; }
 
         public CreateModel(UserManager<ApplicationUser> userManager)
