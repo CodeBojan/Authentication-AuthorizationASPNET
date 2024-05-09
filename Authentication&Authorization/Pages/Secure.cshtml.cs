@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Authentication_Authorization.Pages
 {
-    [Authorize]
+    [Authorize(Roles = "asd")]
     public class SecureModel : PageModel
     {
         public void OnGet()
