@@ -1,0 +1,16 @@
+﻿@page
+@model Authentication_Authorization.Pages.Admin.Roles.CreateModel
+@{
+    ViewData["Title"] = "Create Role";
+}
+<h1 class="bg-info text-white">Create a Role</h1>
+<a asp-page="Roles" class="btn btn-secondary">Back</a>
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label for="@Model.RoleName">Name:</label>
+        <input name="RoleName" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>

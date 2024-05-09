@@ -15,8 +15,11 @@ namespace Authentication_Authorization.Extensions
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetSection("ConnectionStrings:DefaultConnection").Get<string>()));
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-            .AddEntityFrameworkStores<ApplicationDbContext>()
-            .AddDefaultTokenProviders();
+                .AddSignInManager()
+                .AddUserManager<UserManager<ApplicationUser>>()
+                .AddRoleManager<RoleManager<IdentityRole>>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
             builder.Services.Configure<IdentityOptions>(options =>
             {
@@ -28,8 +31,6 @@ namespace Authentication_Authorization.Extensions
 
             builder.Services.AddTransient<IPasswordValidator<ApplicationUser>, CustomPasswordPolicy>(); //added custom password validator -> it combines with the default one and the overriden options from identity options
             builder.Services.AddTransient<IUserValidator<ApplicationUser>, CustomUserPolicy>();
-            builder.Services.AddScoped<UserManager<ApplicationUser>>();
-            builder.Services.AddScoped<SignInManager<ApplicationUser>>();
 
             builder.Services.AddRazorPages();
 
