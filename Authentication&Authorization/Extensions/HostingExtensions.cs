@@ -61,6 +61,12 @@ namespace Authentication_Authorization.Extensions
                     policy.RequireClaim("department", "sales");
                     policy.RequireClaim("status", "senior");
                 });
+                options.AddPolicy("Admin", policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireClaim("http://schemas.microsoft.com/ws/2008/06/identity/claims/role", "Admin");
+                    policy.RequireUserName("bojan");
+                });
             });
 
             return builder.Build();

@@ -1,0 +1,18 @@
+﻿@page
+@model AddClaimModel
+@{
+    ViewData["Title"] = "Add Claim";
+}
+
+<h1>Add Claim Form</h1>
+<button class="btn btn-primary" asp-page="Secure">Back</button>
+
+<form method="post">
+    <label asp-for="ClaimName"></label>
+    <input type="text" name="ClaimName" class="form-control"/>
+
+    <label asp-for="ClaimValue"></label>
+    <input type="text" name="ClaimValue" class="form-control"/>
+
+    <button type="submit" class="btn btn-primary">Add</button>
+</form>
