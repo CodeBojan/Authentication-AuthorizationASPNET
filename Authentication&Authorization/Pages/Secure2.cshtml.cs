@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace Authentication_Authorization.Pages
 {
 
-    [Authorize("ManageCustomers")]
+    [Authorize(Policy = "AllowBojan")]
     public class Secure2Model : PageModel
     {
         public void OnGet()

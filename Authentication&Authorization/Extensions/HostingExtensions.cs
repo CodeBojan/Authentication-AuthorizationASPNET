@@ -1,6 +1,7 @@
 ﻿using Authentication_Authorization.Data;
 using Authentication_Authorization.IdentityPolicies;
 using Authentication_Authorization.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,6 +32,7 @@ namespace Authentication_Authorization.Extensions
 
             builder.Services.AddTransient<IPasswordValidator<ApplicationUser>, CustomPasswordPolicy>(); //added custom password validator -> it combines with the default one and the overriden options from identity options
             builder.Services.AddTransient<IUserValidator<ApplicationUser>, CustomUserPolicy>();
+            builder.Services.AddTransient<IAuthorizationHandler, AllowUsersHandler>();
 
             builder.Services.AddRazorPages();
 
@@ -65,6 +67,11 @@ namespace Authentication_Authorization.Extensions
                 {
                     policy.RequireAuthenticatedUser();
                     policy.RequireClaim("http://schemas.microsoft.com/ws/2008/06/identity/claims/role", "Admin");
+                    policy.RequireUserName("bojan");
+                });
+                options.AddPolicy("AllowBojan", policy =>
+                {
+                    policy.RequireAuthenticatedUser();
                     policy.RequireUserName("bojan");
                 });
             });
