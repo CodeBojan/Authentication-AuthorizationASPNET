@@ -1,0 +1,25 @@
+﻿@page
+@model Authentication_Authorization.Pages.WeatherModel
+@{
+    ViewData["Title"] = "Weather Forecast";
+}
+
+<table>
+    <thead>
+        <th>Date</th>
+        <th>Temperature in C</th>
+        <th>Temperature in F</th>
+        <th>Summary</th>
+    </thead>
+    <tbody>
+        @foreach(var data in Model.WeatherData)
+        {
+            <tr>
+                <td>@data.Date</td>
+                <td>@data.TemperatureC</td>
+                <td>@data.TemperatureF</td>
+                <td>@data.Summary</td>
+            </tr>
+        }
+    </tbody>
+</table>

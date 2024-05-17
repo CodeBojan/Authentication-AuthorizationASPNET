@@ -1,8 +1,7 @@
-using Duende.IdentityServer.Models;
-using Duende.IdentityServer.Test;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using System.Linq.Expressions;
 using WeatherAPI;
+using Authentication_Authorization.Services;
+using Authentication_Authorization.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 

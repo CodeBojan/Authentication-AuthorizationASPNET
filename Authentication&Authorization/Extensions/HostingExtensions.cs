@@ -1,6 +1,7 @@
 ﻿using Authentication_Authorization.Data;
 using Authentication_Authorization.IdentityPolicies;
 using Authentication_Authorization.Models;
+using Authentication_Authorization.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,9 @@ namespace Authentication_Authorization.Extensions
     {
         public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
         {
+            builder.Services.Configure<IdentityServerSettings>(builder.Configuration.GetSection("IdentityServerSettings"));
+            builder.Services.AddSingleton<ITokenService, TokenService>();
+
             //ASP.NET Identity Configuration
 
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetSection("ConnectionStrings:DefaultConnection").Get<string>()));
