@@ -42,7 +42,7 @@ namespace Authentication_Authorization.Pages.Admin
                 ApplicationUser user = new ApplicationUser()
                 {
                     UserName = UserName,
-                    Email = Email
+                    Email = Email,
                 };
                 IdentityResult result = await _userManager.CreateAsync(user, Password);
                 if (result.Succeeded)

@@ -27,6 +27,7 @@ namespace Authentication_Authorization.Pages.Account
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            
         }
         public void OnGet()
         {
