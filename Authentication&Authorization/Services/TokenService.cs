@@ -24,18 +24,17 @@ namespace Authentication_Authorization.Services
                 throw new Exception("Unable to get discovery document");
             }
         }
-        public Task<TokenResponse> GetTokenAsync(string scope)
+        public async Task<TokenResponse> GetTokenAsync(string scope)
         {
             using var client = new HttpClient();
-            var tokenResponse = client.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest()
+            var tokenResponse = await client.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest()
             {
                 Scope = scope,
                 ClientId = _identityServerSettings.Value.ClientName,
                 ClientSecret = _identityServerSettings.Value.ClientSecret,
                 Address = _discoveryDocument.TokenEndpoint
             });
-
-            if(tokenResponse.IsFaulted)
+            if(tokenResponse.IsError)
             {
                 throw new Exception("Failed to get token");
             }
