@@ -114,9 +114,9 @@ namespace WeatherAPI
 
           AllowedGrantTypes = GrantTypes.Code,
 
-          RedirectUris = {"https://localhost:5444/signin-oidc"},
-          FrontChannelLogoutUri = "https://localhost:5444/signout-oidc",
-          PostLogoutRedirectUris = {"https://localhost:5444/signout-callback-oidc"},
+          RedirectUris = {"https://localhost:5000/signin-oidc"},
+          FrontChannelLogoutUri = "https://localhost:5000/signout-oidc",
+          PostLogoutRedirectUris = {"https://localhost:5000/signout-callback-oidc"},
 
           AllowOfflineAccess = true,
           AllowedScopes = {"openid", "profile", "weatherapi.read"},

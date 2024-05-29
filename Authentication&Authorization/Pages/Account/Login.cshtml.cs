@@ -1,6 +1,7 @@
 using Authentication_Authorization.Data;
 using Authentication_Authorization.Models;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -29,8 +30,13 @@ namespace Authentication_Authorization.Pages.Account
             _signInManager = signInManager;
             
         }
-        public void OnGet()
+        public async Task<IActionResult> OnGet()
         {
+            var props = new AuthenticationProperties()
+            {
+                RedirectUri = ReturnUrl
+            };
+            return Challenge(props, OpenIdConnectDefaults.AuthenticationScheme);
         }
 
         public async Task<IActionResult> OnPost() 

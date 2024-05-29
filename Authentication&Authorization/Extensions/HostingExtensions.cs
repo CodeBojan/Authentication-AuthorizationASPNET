@@ -2,6 +2,8 @@
 using Authentication_Authorization.IdentityPolicies;
 using Authentication_Authorization.Models;
 using Authentication_Authorization.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -40,14 +42,33 @@ namespace Authentication_Authorization.Extensions
 
             builder.Services.AddRazorPages();
 
-            builder.Services.AddAuthentication("cookie")
-                .AddCookie("cookie", o =>
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                //options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+            })
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, o =>
                 {
                     o.Cookie.Name = "demo";
                     o.ExpireTimeSpan = TimeSpan.FromHours(8);
                     o.SlidingExpiration = true; //TODO: what is this?
-                    o.LoginPath = "/account/login";
-                    o.AccessDeniedPath = "/account/accessdenied";
+                    o.LoginPath = "/Account/Login";
+                    o.AccessDeniedPath = "/Account/AccessDenied";
+                })
+                .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
+                {
+                    
+                    options.Authority = builder.Configuration["InteractiveServiceSettings:AuthorityUrl"];
+                    options.ClientId = builder.Configuration["InteractiveServiceSettings:ClientId"];
+                    options.ClientSecret = builder.Configuration["InteractiveServiceSettings:ClientSecret"];
+                    options.Scope.Add(builder.Configuration["InteractiveServiceSettings:Scopes:0"]);
+                    options.AccessDeniedPath = "/Account/AccessDenied";
+                    options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.ResponseType = "code";
+                    options.ResponseMode = "query";
+                    options.SaveTokens = true;
+                    options.UsePkce = true;
+                    options.CallbackPath = "/signin-oidc";
                 })
                 .AddCookie("temp")
                 .AddGoogle("Google", o =>
@@ -104,7 +125,13 @@ namespace Authentication_Authorization.Extensions
             app.UseAuthorization();
 
             app.MapRazorPages().RequireAuthorization();
+            /*app.Use(async (context, next) =>
+            {
+                var csp = "default-src 'self'; connect-src 'self' https://localhost:5003/";
+                context.Response.Headers.Add("Content-Security-Policy", csp);
 
+                await next();
+            });*/
             return app;
         }
     }

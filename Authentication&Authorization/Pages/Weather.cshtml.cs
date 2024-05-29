@@ -1,6 +1,7 @@
 using Authentication_Authorization.Models;
 using Authentication_Authorization.Services;
 using IdentityModel.Client;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -23,8 +24,9 @@ namespace Authentication_Authorization.Pages
         {
 
             using var client = new HttpClient();
-            var token = await _tokenService.GetTokenAsync("weatherapi.read");
-            client.SetBearerToken(token.AccessToken);
+            //var token = await _tokenService.GetTokenAsync("weatherapi.read");
+            var token = await HttpContext.GetTokenAsync("access_token");
+            client.SetBearerToken(token);
 
             var result = await client.GetAsync("https://localhost:5003/weather");
             if(result.IsSuccessStatusCode)
